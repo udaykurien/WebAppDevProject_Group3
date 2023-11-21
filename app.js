@@ -217,7 +217,7 @@ app.get('/incidents/search/:searchString', async (req, res) => {
 
 app.get('/', (req, res) => {
   console.log('Route received');
-  res.json({"message":"Welcome to Dresstore application."});
+  res.json({"message":"Welcome to Incident tracking application."});
 });
 
 
