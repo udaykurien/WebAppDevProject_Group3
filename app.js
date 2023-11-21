@@ -23,7 +23,10 @@ mongoose.connect(uri)
   incidentType: String,
   description: String,
   severityLevel: Number,
-  actionsTaken: String,
+  actionsTaken: {
+    type: String,
+    default: "None"
+  },
   status: String,
   createdAt: {
     type: Date,
@@ -39,7 +42,9 @@ app.use(express.json());
 // Add incident
 app.post('/incidents', async (req, res) => {
   try {
+    // Set default values for created at and actions taken
     req.body.createdAt = new Date();
+    req.body.actionsTaken = req.body.actionsTaken || "None"; // workaround
     const incident = new Incident(req.body);
     const savedIncident = await incident.save();
     res.status(201).json(savedIncident);
