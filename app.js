@@ -68,6 +68,7 @@ app.get('/incidents', async (req, res) => {
 // Get all incidents sorted by property (sortBY)
 app.get('/incidents/all', async (req, res) => {
   try {
+    // Default sorting by date
     const sortBy = req.query.sortBy || 'createdAt';
     const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1;
 
@@ -77,10 +78,12 @@ app.get('/incidents/all', async (req, res) => {
     const incidents = await Incident.find({})
       .sort(sortObject);
 
+    // Debug
     incidents.forEach((incident) => {
       console.log(incident);
     });
 
+    // Response object
     res.json(incidents);
   } catch (error) {
     console.error('Error getting all incidents:', error);
@@ -147,7 +150,7 @@ app.get('/incidents/:incidentId', async (req, res) => {
       res.status(404).json({ error: 'Incident id not found' });
     }
   } catch (error) {
-    console.error('Error finding incident by id:', error);
+    console.error('Error findings incident by id:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
@@ -164,7 +167,7 @@ app.get('/incidents/status/:status', async (req, res) => {
       res.status(404).json({ error: 'No incidents found with the specified status' });
     }
   } catch (error) {
-    console.error('Error searching for incidents by status:', error);
+    console.error('Error finding incidents by status:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
