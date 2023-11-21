@@ -124,7 +124,7 @@ app.get('/incidents/:incidentId', async (req, res) => {
   }
 });
 
-// Search incidents by status
+// Find incidents by status
 app.get('/incidents/status/:status', async (req, res) => {
   try {
     const status = req.params.status;
@@ -137,6 +137,23 @@ app.get('/incidents/status/:status', async (req, res) => {
     }
   } catch (error) {
     console.error('Error searching for incidents by status:', error);
+    res.status(500).json({ error: 'Database Error' });
+  }
+});
+
+// Find incidents by severity level
+app.get('/incidents/severityLevel/:severityLevel', async (req, res) => {
+  try {
+    const severityLevel = req.params.severityLevel;
+    const incidents = await Incident.find({ severityLevel: severityLevel });
+    
+    if (incidents.length > 0) {
+      res.json(incidents);
+    } else {
+      res.status(404).json({ error: 'No incidents found with the specified severity level' });
+    }
+  } catch (error) {
+    console.error('Error searching for incidents by severityLevel:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
