@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incident Viewer</title>
+</head>
+<body>
+  <h1>Incident Viewer</h1>
+  <button onclick="fetchIncidents()">Fetch Incidents</button>
+  <ul id="incidentList"></ul>
+
+  <script>
+    async function fetchIncidents() {
+        console.log("in fetch")
+      try {
+        const response = await fetch('http://localhost:3000/incidents/all');
+        const incidents = await response.json();
+        console.log("hi")
+        displayIncidents(incidents);
+      } catch (error) {
+        console.error('Error fetching incidents:', error);
+      }
+    }
+
+    function displayIncidents(incidents) {
+      const incidentList = document.getElementById('incidentList');
+      incidentList.innerHTML = '';
+
+      incidents.forEach(incident => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Reporter: ${incident.reporter}, Type: ${incident.incidentType}, Severity: ${incident.severityLevel}`;
+        incidentList.appendChild(listItem);
+      });
+    }
+  </script>
+</body>
+</html>
