@@ -65,6 +65,29 @@ app.get('/incidents', async (req, res) => {
   }
 });
 
+// Get all incidents sorted by property (sortBY)
+app.get('/incidents/all', async (req, res) => {
+  try {
+    const sortBy = req.query.sortBy || 'createdAt';
+    const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1;
+
+    const sortObject = {};
+    sortObject[sortBy] = sortOrder;
+
+    const incidents = await Incident.find({})
+      .sort(sortObject);
+
+    incidents.forEach((incident) => {
+      console.log(incident);
+    });
+
+    res.json(incidents);
+  } catch (error) {
+    console.error('Error getting all incidents:', error);
+    res.status(500).json({ error: 'Database Error' });
+  }
+});
+
 // Update incident
 app.put('/incidents/:incidentId', async (req, res) => {
   try {
