@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 // Define connection url, ports etc
 const app = express();
-const uri = 'mongodb://127.0.0.1:27017/Marketplace01';
+const uri = 'mongodb://127.0.0.1:27017/WebDevProject';
 const port = 3000;
 
 // Connect to MongoDB
@@ -22,7 +22,7 @@ mongoose.connect(uri)
   assignedTo: String,
   incidentType: String,
   description: String,
-  severityLevel: String,
+  severityLevel: Number,
   actionsTaken: String,
   status: String,
   createdAt: {
@@ -120,6 +120,23 @@ app.get('/incidents/:incidentId', async (req, res) => {
     }
   } catch (error) {
     console.error('Error finding incident by id:', error);
+    res.status(500).json({ error: 'Database Error' });
+  }
+});
+
+// Search incidents by status
+app.get('/incidents/status/:status', async (req, res) => {
+  try {
+    const status = req.params.status;
+    const incidents = await Incident.find({ status: status });
+    
+    if (incidents.length > 0) {
+      res.json(incidents);
+    } else {
+      res.status(404).json({ error: 'No incidents found with the specified status' });
+    }
+  } catch (error) {
+    console.error('Error searching for incidents by status:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
