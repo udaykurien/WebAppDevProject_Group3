@@ -9,10 +9,10 @@ db.createCollection(
                         bsonType: "string"
                     },
                     assignedTo : {
-                        bsonType: "String"
+                        bsonType: "string"
                     },
                     incidentType : {
-                        bsonType : "String"
+                        bsonType : "string"
                     },
                     description : {
                         bsonType : "string"

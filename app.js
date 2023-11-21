@@ -16,124 +16,132 @@ mongoose.connect(uri)
     console.error('Error connecting to MongoDB');
   });
 
-// Define product schema
-  const productSchema = new mongoose.Schema({
-  name: String,
+// Define incident schema
+  const incidentSchema = new mongoose.Schema({
+  reporter: String,
+  assignedTo: String,
+  incidentType: String,
   description: String,
-  price: Number,
-  quantity: Number,
-  category: String,
+  severityLevel: String,
+  actionsTaken: String,
+  status: String,
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  closedAt: Date
 });
 
-const Product = mongoose.model('product', productSchema);
+const Incident = mongoose.model('incident', incidentSchema);
 
 app.use(express.json());
 
-// Add product
-app.post('/products', async (req, res) => {
+// Add incident
+app.post('/incidents', async (req, res) => {
   try {
-    const product = new Product(req.body);
-    const savedProduct = await product.save();
-    res.status(201).json(savedProduct);
+    req.body.createdAt = new Date();
+    const incident = new Incident(req.body);
+    const savedIncident = await incident.save();
+    res.status(201).json(savedIncident);
   } catch (error) {
-    console.error('Error posting product:', error);
+    console.error('Error posting incident:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
 
-// Get all products
-app.get('/products', async (req, res) => {
+// Get all incidents
+app.get('/incidents', async (req, res) => {
   try {
-    const products = await Product.find();
-    res.json(products);
+    const incidents = await Incident.find();
+    res.json(incidents);
   } catch (error) {
-    console.error('Error getting products:', error);
+    console.error('Error getting incidents:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
 
-// Update product
-app.put('/products/:productId', async (req, res) => {
+// Update incident
+app.put('/incidents/:incidentId', async (req, res) => {
   try {
-    const productId = req.params.productId;
+    const incidentId = req.params.incidentId;
     const update = req.body;
-    const updatedProduct = await Product.findByIdAndUpdate(productId, update, { new: true });
-    if (updatedProduct) {
-      res.json(updatedProduct);
+    const updatedIncident = await Incident.findByIdAndUpdate(incidentId, update, { new: true });
+    if (updatedIncident) {
+      res.json(updatedIncident);
     } else {
-      res.status(404).json({ error: 'Product not found' });
+      res.status(404).json({ error: 'Incident not found' });
     }
   } catch (error) {
-    console.error('Error putting product:', error);
+    console.error('Error putting incident:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
 
-// Delete product by id
-app.delete('/products/:productId', async (req, res) => {
+// Delete incident by id
+app.delete('/incidents/:incidentId', async (req, res) => {
   try {
-    const productId = req.params.productId;
-    const deletedProduct = await Product.findByIdAndDelete(productId);
-    if (deletedProduct) {
-      res.json({ message: 'Product deleted' });
+    const incidentId = req.params.incidentId;
+    const deletedIncident = await Incident.findByIdAndDelete(incidentId);
+    if (deletedIncident) {
+      res.json({ message: 'Incident deleted' });
     } else {
-      res.status(404).json({ error: 'Product not found' });
+      res.status(404).json({ error: 'Incident not found' });
     }
   } catch (error) {
-    console.error('Error deleting product:', error);
+    console.error('Error deleting incident:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
 
-// Delete all products
-app.delete('/products', async (req, res) => {
+// Delete all incidents
+app.delete('/incidents', async (req, res) => {
   try {
-    const deleteResult = await Product.deleteMany({});
+    const deleteResult = await Incident.deleteMany({});
     if (deleteResult.deletedCount > 0) {
-      res.json({ message: 'All products deleted' });
+      res.json({ message: 'All incidents deleted' });
     } else {
-      res.status(404).json({ error: 'No products found to delete' });
+      res.status(404).json({ error: 'No incidents found to delete' });
     }
   } catch (error) {
-    console.error('Error deleting products:', error);
+    console.error('Error deleting incidents:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
 
-// Find product by id
-app.get('/products/:productId', async (req, res) => {
+// Find incident by id
+app.get('/incidents/:incidentId', async (req, res) => {
   try {
-    const productId = req.params.productId;
-    const product = await Product.findById(productId);
-    if (product) {
-      res.json(product);
+    const incidentId = req.params.incidentId;
+    const incident = await Incident.findById(incidentId);
+    if (incident) {
+      res.json(incident);
     } else {
-      res.status(404).json({ error: 'Product id not found' });
+      res.status(404).json({ error: 'Incident id not found' });
     }
   } catch (error) {
-    console.error('Error finding product by id:', error);
+    console.error('Error finding incident by id:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
 
-// Search products using regex
-app.get('/products/search/:searchString', async (req, res) => {
+// Search incidents using regex
+app.get('/incidents/search/:searchString', async (req, res) => {
   try {
     const searchString = req.params.searchString;
-    const products = await Product.find({
+    const incidents = await Incident.find({
       $or: [
         { name: { $regex: searchString, $options: 'i' } }, 
         { category: { $regex: searchString, $options: 'i' } },
       ],
     });
 
-    if (products.length > 0) {
-      res.json(products);
+    if (incidents.length > 0) {
+      res.json(incidents);
     } else {
-      res.status(404).json({ error: 'No matching products found' });
+      res.status(404).json({ error: 'No matching incidents found' });
     }
   } catch (error) {
-    console.error('Error searching for products:', error);
+    console.error('Error searching for incidents:', error);
     res.status(500).json({ error: 'Database Error' });
   }
 });
@@ -148,4 +156,4 @@ const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-module.exports = {server,Product};
+module.exports = {server,Incident};
