@@ -1,11 +1,14 @@
 // Import required packages
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // Define connection url, ports etc
 const app = express();
 const uri = 'mongodb://127.0.0.1:27017/WebDevProject';
 const port = 3000;
+
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect(uri)
@@ -79,11 +82,12 @@ app.get('/incidents/all', async (req, res) => {
       .sort(sortObject);
 
     // Debug
-    incidents.forEach((incident) => {
-      console.log(incident);
-    });
+    // incidents.forEach((incident) => {
+    //   console.log(incident);
+    // });
 
     // Response object
+
     res.json(incidents);
   } catch (error) {
     console.error('Error getting all incidents:', error);
