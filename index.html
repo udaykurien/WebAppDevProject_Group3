@@ -80,7 +80,7 @@
       // Debugging
       console.log(result.message); 
       // Refresh the incident list after deletion
-      fetchIncidentsByTime(); 
+      fetchIncidentsByField('createdAt'); 
     } catch (error) {
       console.error('Error deleting incident:', error);
     }
