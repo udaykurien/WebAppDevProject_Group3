@@ -12,6 +12,7 @@
   <button id="sortByTimeBtn">List Incidents by Creation Time</button>
   <button id="sortBySeverityBtn">List Incidents by Severity</button>
   <button id="sortByTypeBtn">List Incidents by Type</button>
+  <button id="sortByStatusBtn">List Incidents by Status</button>
   
   <table id="incidentTable">
     <thead>
@@ -34,6 +35,7 @@
     document.getElementById('sortByTimeBtn').addEventListener('click', () => fetchIncidentsByField('createdAt'));
     document.getElementById('sortBySeverityBtn').addEventListener('click', () => fetchIncidentsByField('severityLevel'));
     document.getElementById('sortByTypeBtn').addEventListener('click', () => fetchIncidentsByField('incidentType'));
+    document.getElementById('sortByStatusBtn').addEventListener('click', () => fetchIncidentsByField('status'));
 
     // Fetch and sort incidents by fields
     async function fetchIncidentsByField(sortByField) {
@@ -44,9 +46,7 @@
     } catch (error) {
       console.error('Error fetching incidents:', error);
     }
-  }
-
-    
+  }    
     // Function to display each object of database along with a delete button
     function displayIncidents(incidents) {
       const incidentList = document.getElementById('incidentList');
