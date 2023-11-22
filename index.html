@@ -63,6 +63,13 @@
         cell.textContent = incident[property];
       });
 
+      // Add update button to each row
+      const updateCell = row.insertCell();
+      const updateButton = document.createElement('button');
+      updateButton.textContent = 'Update';
+      updateButton.addEventListener('click', () => goToUpdateIncidentPage(incident._id));
+      updateCell.appendChild(updateButton);
+
       // Add delete button to each row
       const deleteCell = row.insertCell();
       const deleteButton = document.createElement('button');
@@ -86,6 +93,14 @@
     }
   }
 }
+
+function goToUpdateIncidentPage(incident) {
+    const queryParams = new URLSearchParams();
+    for (const key in incident) {
+      queryParams.append(key, incident[key]);
+    }
+    window.location.href = `update_incident.html?${queryParams.toString()}`;
+  }
 
 function goToNewIncidentPage() {
       window.location.href = 'new_incident.html';
