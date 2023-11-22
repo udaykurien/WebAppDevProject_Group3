@@ -13,6 +13,7 @@
   <button id="sortBySeverityBtn">List Incidents by Severity</button>
   <button id="sortByTypeBtn">List Incidents by Type</button>
   <button id="sortByStatusBtn">List Incidents by Status</button>
+  <button id="newIncidentBtn" onclick="goToNewIncidentPage()">Add Incident</button>
   
   <table id="incidentTable">
     <thead>
@@ -84,6 +85,10 @@
       console.error('Error deleting incident:', error);
     }
   }
+}
+
+function goToNewIncidentPage() {
+      window.location.href = 'new_incident.html';
 }
   </script>
 </body>
