@@ -67,7 +67,7 @@
       const updateCell = row.insertCell();
       const updateButton = document.createElement('button');
       updateButton.textContent = 'Update';
-      updateButton.addEventListener('click', () => goToUpdateIncidentPage(incident._id));
+      updateButton.addEventListener('click', () => goToUpdateIncidentPage(incident));
       updateCell.appendChild(updateButton);
 
       // Add delete button to each row
@@ -95,12 +95,12 @@
 }
 
 function goToUpdateIncidentPage(incident) {
-    const queryParams = new URLSearchParams();
-    for (const key in incident) {
-      queryParams.append(key, incident[key]);
-    }
-    window.location.href = `update_incident.html?${queryParams.toString()}`;
+  const queryParams = new URLSearchParams();
+  for (const key in incident) {
+    queryParams.append(key, incident[key]);
   }
+  window.location.href = `update_incident.html?${queryParams.toString()}`;
+}
 
 function goToNewIncidentPage() {
       window.location.href = 'new_incident.html';
