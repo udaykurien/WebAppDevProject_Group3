@@ -43,14 +43,6 @@
     const updateIncidentForm = document.getElementById('updateIncidentForm');
 
     // Function to read URL parameters
-    // function getUrlParams() {
-    //   const params = new URLSearchParams(window.location.search);
-    //   const paramObject = {};
-    //   for (const [key, value] of params) {
-    //     paramObject[key] = value;
-    //   }
-    //   return paramObject;
-    // }
     function getUrlParams() {
       const params = new URLSearchParams(window.location.search);
       const paramObject = {};
@@ -65,14 +57,6 @@
 
     // Function to pre-fill form fields with incident details
     function preFillForm() {
-        // const incidentDetails = getUrlParams();
-        // console.log('Incident Details:', incidentDetails);
-        // for (const key in incidentDetails) {
-        //     const inputField = document.getElementById(key);
-        //     if (inputField) {
-        //         inputField.value = incidentDetails[key];
-        //     }
-        // }
         const incidentDetails = getUrlParams();
         console.log('Incident Details:', incidentDetails);
         for (const key in incidentDetails) {
@@ -90,13 +74,6 @@
             console.log(`Element with id ${key} not found.`);
           }
         }
-
-        // Set the incidentId separately
-        // const incidentIdField = document.getElementById('incidentId');
-        // if (incidentIdField) {
-        //     incidentIdField.value = incidentDetails.incidentId || '';
-        // }
-
     }
 
     // Call the function to pre-fill the form on page load
