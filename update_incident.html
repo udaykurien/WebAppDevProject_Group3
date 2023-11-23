@@ -9,12 +9,17 @@
 <body>
   <h1>Update Incident</h1>
   <form id="updateIncidentForm">
-    <!-- Include input fields for each property that can be updated -->
-    <label for="status">Status:</label>
-    <input type="text" id="status" name="status" required><br>
+    <label for="reporter">Reporter:</label>
+    <input type="text" id="reporter" name="reporter" required><br>
 
     <label for="assignedTo">Assigned To:</label>
     <input type="text" id="assignedTo" name="assignedTo" required><br>
+
+    <label for="incidentType">Incident Type:</label>
+    <input type="text" id="incidentType" name="incidentType" required><br>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" required><br>
 
     <label for="severityLevel">Severity Level:</label>
     <input type="number" id="severityLevel" name="severityLevel" required><br>
@@ -22,8 +27,14 @@
     <label for="actionsTaken">Actions Taken:</label>
     <input type="text" id="actionsTaken" name="actionsTaken" required><br>
 
+    <label for="status">Status:</label>
+    <input type="text" id="status" name="status" required><br>
+
     <!-- Include a hidden input for the incident ID -->
-    <input type="hidden" id="incidentId" name="incidentId">
+    <!-- <label for="createdAt">Created At:</label>
+    <input type="text" id="createdAt" name="createdAt"> -->
+    <!-- <label for="_id">ID:</label> -->
+    <input type="hidden" id="_id" name="_id">
 
     <button type="submit">Update</button>
   </form>
@@ -32,32 +43,61 @@
     const updateIncidentForm = document.getElementById('updateIncidentForm');
 
     // Function to read URL parameters
+    // function getUrlParams() {
+    //   const params = new URLSearchParams(window.location.search);
+    //   const paramObject = {};
+    //   for (const [key, value] of params) {
+    //     paramObject[key] = value;
+    //   }
+    //   return paramObject;
+    // }
     function getUrlParams() {
       const params = new URLSearchParams(window.location.search);
       const paramObject = {};
-      for (const [key, value] of params) {
-        paramObject[key] = value;
+
+      // Iterate through the keys in the params object
+      for (const key of params.keys()) {
+        paramObject[key] = params.get(key);
       }
+
       return paramObject;
-    }
+}
 
     // Function to pre-fill form fields with incident details
     function preFillForm() {
+        // const incidentDetails = getUrlParams();
+        // console.log('Incident Details:', incidentDetails);
+        // for (const key in incidentDetails) {
+        //     const inputField = document.getElementById(key);
+        //     if (inputField) {
+        //         inputField.value = incidentDetails[key];
+        //     }
+        // }
         const incidentDetails = getUrlParams();
+        console.log('Incident Details:', incidentDetails);
         for (const key in incidentDetails) {
-        const inputField = document.getElementById(key);
-        if (inputField) {
-            // Check if the field is not the incidentId field
-            if (key !== 'incidentId') {
-            inputField.value = incidentDetails[key];
-            } else {
-            // If it is the incidentId field, set it as a value for reference
-            inputField.value = incidentDetails[key];
-            }
+          // Skip the __v field
+          if (key === '__v') {
+            continue;
+          }
+          const inputField = document.getElementById(key);
+          if (inputField) {
+            // Set value for all fields except the incidentId
+              inputField.value = incidentDetails[key];
+              console.log(`Set value for ${key}: ${incidentDetails[key]}`);
+          }
+          else {
+            console.log(`Element with id ${key} not found.`);
+          }
         }
-        }
-    }
 
+        // Set the incidentId separately
+        // const incidentIdField = document.getElementById('incidentId');
+        // if (incidentIdField) {
+        //     incidentIdField.value = incidentDetails.incidentId || '';
+        // }
+
+    }
 
     // Call the function to pre-fill the form on page load
     preFillForm();
@@ -69,11 +109,15 @@
       const formData = new FormData(updateIncidentForm);
       const formDataObject = {};
       formData.forEach((value, key) => {
-        formDataObject[key] = value;
+        if (key === 'severityLevel') {
+      formDataObject[key] = parseInt(value, 10);
+    } else {
+      formDataObject[key] = value;
+    }
       });
 
       try {
-        const response = await fetch(`http://localhost:3000/incidents/${formDataObject.incidentId}`, {
+        const response = await fetch(`http://localhost:3000/incidents/${formDataObject._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

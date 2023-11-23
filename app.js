@@ -7,36 +7,39 @@ const cors = require('cors');
 const app = express();
 const uri = 'mongodb://127.0.0.1:27017/WebDevProject';
 const port = 3000;
+console.log(" - using app.js")
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: 'Content-Type,Authorization',
+}));
 
 // Connect to MongoDB
 mongoose.connect(uri)
   .then(() => {
-    console.log('Connected to MongoDB');
+    console.log(' - Connected to MongoDB');
   })
   .catch((err) => {
-    console.error('Error connecting to MongoDB');
+    console.error(' - Error connecting to MongoDB');
   });
 
 // Define incident schema
-  const incidentSchema = new mongoose.Schema({
-  reporter: String,
-  assignedTo: String,
-  incidentType: String,
-  description: String,
-  severityLevel: Number,
-  actionsTaken: {
-    type: String,
-    default: "None"
-  },
-  status: String,
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  closedAt: Date
-});
+const incidentSchema = new mongoose.Schema(
+  {
+    reporter: String,
+    assignedTo: String,
+    incidentType: String,
+    description: String,
+    severityLevel: Number,
+    actionsTaken: String,
+    status: String,
+    createdAt: Date,
+    closedAt: Date
+}
+);
+console.log(" - Schema defined")
+
 
 const Incident = mongoose.model('incident', incidentSchema);
 
@@ -51,6 +54,7 @@ app.post('/incidents', async (req, res) => {
     const incident = new Incident(req.body);
     const savedIncident = await incident.save();
     res.status(201).json(savedIncident);
+    console.log(" - Incident added")
   } catch (error) {
     console.error('Error posting incident:', error);
     res.status(500).json({ error: 'Database Error' });
@@ -59,7 +63,14 @@ app.post('/incidents', async (req, res) => {
 
 // Get all incidents
 app.get('/incidents', async (req, res) => {
-  try {
+  try {      if (inputField) {
+                // Set value for all fields except the incidentId
+                    inputField.value = incidentDetails[key];
+                    console.log(`Set value for ${key}: ${incidentDetails[key]}`);
+            }
+            else {
+              console.log(`Element with id ${key} not found.`);
+    }
     const incidents = await Incident.find();
     res.json(incidents);
   } catch (error) {
@@ -87,8 +98,8 @@ app.get('/incidents/all', async (req, res) => {
     // });
 
     // Response object
-
     res.json(incidents);
+    console.log(" - Incidents object returned in response")
   } catch (error) {
     console.error('Error getting all incidents:', error);
     res.status(500).json({ error: 'Database Error' });
@@ -98,12 +109,19 @@ app.get('/incidents/all', async (req, res) => {
 // Update incident
 app.put('/incidents/:incidentId', async (req, res) => {
   try {
+    // Retrieve incidentId from URL params
     const incidentId = req.params.incidentId;
+    console.log(' - In update block');
+    console.log('Received Incident ID:', incidentId);
+
     const update = req.body;
     const updatedIncident = await Incident.findByIdAndUpdate(incidentId, update, { new: true });
+
     if (updatedIncident) {
       res.json(updatedIncident);
+      console.log("Update succeeded");
     } else {
+      console.log("Update failed");
       res.status(404).json({ error: 'Incident not found' });
     }
   } catch (error) {
@@ -111,6 +129,7 @@ app.put('/incidents/:incidentId', async (req, res) => {
     res.status(500).json({ error: 'Database Error' });
   }
 });
+
 
 // Delete incident by id
 app.delete('/incidents/:incidentId', async (req, res) => {
