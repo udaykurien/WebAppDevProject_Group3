@@ -9,6 +9,8 @@ const uri = 'mongodb://127.0.0.1:27017/WebDevProject';
 const port = 3000;
 console.log(" - using app.js")
 
+app.set('view engine', 'ejs')
+
 app.use(cors({
   origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -45,6 +47,26 @@ const Incident = mongoose.model('incident', incidentSchema);
 
 app.use(express.json());
 
+// Define routes
+app.get('/', (req, res) => {
+  console.log('Route received');
+  res.render('home', { title: 'Home' });
+});
+
+app.get('/index_incident.html', (req, res) => {
+  res.render('index_incident', { title: 'Incidents' });
+});
+
+app.get('/new_incident.html', (req, res) => {
+  res.render('new_incident', { title: 'New Incident' });
+});
+
+
+app.get('/update_incident.html', (req, res) => {
+  res.render('update_incident', { title: 'Update Incident' });
+});
+
+// Define methods
 // Add incident
 app.post('/incidents', async (req, res) => {
   try {
@@ -232,11 +254,6 @@ app.get('/incidents/search/:searchString', async (req, res) => {
     console.error('Error searching for incidents:', error);
     res.status(500).json({ error: 'Database Error' });
   }
-});
-
-app.get('/', (req, res) => {
-  console.log('Route received');
-  res.json({"message":"Welcome to Incident tracking application."});
 });
 
 

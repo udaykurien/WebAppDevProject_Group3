@@ -1,0 +1,118 @@
+<!-- update_incident.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Incident</title>
+</head>
+<body>
+  <h1>Update Incident</h1>
+  <form id="updateIncidentForm">
+    <label for="reporter">Reporter:</label>
+    <input type="text" id="reporter" name="reporter" required><br>
+
+    <label for="assignedTo">Assigned To:</label>
+    <input type="text" id="assignedTo" name="assignedTo" required><br>
+
+    <label for="incidentType">Incident Type:</label>
+    <input type="text" id="incidentType" name="incidentType" required><br>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" required><br>
+
+    <label for="severityLevel">Severity Level:</label>
+    <input type="number" id="severityLevel" name="severityLevel" required><br>
+
+    <label for="actionsTaken">Actions Taken:</label>
+    <input type="text" id="actionsTaken" name="actionsTaken" required><br>
+
+    <label for="status">Status:</label>
+    <input type="text" id="status" name="status" required><br>
+
+    <!-- Include a hidden input for the incident ID -->
+    <!-- <label for="createdAt">Created At:</label>
+    <input type="text" id="createdAt" name="createdAt"> -->
+    <!-- <label for="_id">ID:</label> -->
+    <input type="hidden" id="_id" name="_id">
+
+    <button type="submit">Update</button>
+  </form>
+
+  <script>
+    const updateIncidentForm = document.getElementById('updateIncidentForm');
+
+    // Function to read URL parameters
+    function getUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      const paramObject = {};
+
+      // Iterate through the keys in the params object
+      for (const key of params.keys()) {
+        paramObject[key] = params.get(key);
+      }
+
+      return paramObject;
+}
+
+    // Function to pre-fill form fields with incident details
+    function preFillForm() {
+        const incidentDetails = getUrlParams();
+        console.log('Incident Details:', incidentDetails);
+        for (const key in incidentDetails) {
+          // Skip the __v field
+          if (key === '__v') {
+            continue;
+          }
+          const inputField = document.getElementById(key);
+          if (inputField) {
+            // Set value for all fields except the incidentId
+              inputField.value = incidentDetails[key];
+              console.log(`Set value for ${key}: ${incidentDetails[key]}`);
+          }
+          else {
+            console.log(`Element with id ${key} not found.`);
+          }
+        }
+    }
+
+    // Call the function to pre-fill the form on page load
+    preFillForm();
+
+    // Add an event listener for the form submission
+    updateIncidentForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(updateIncidentForm);
+      const formDataObject = {};
+      formData.forEach((value, key) => {
+        if (key === 'severityLevel') {
+      formDataObject[key] = parseInt(value, 10);
+    } else {
+      formDataObject[key] = value;
+    }
+      });
+
+      try {
+        const response = await fetch(`http://localhost:3000/incidents/${formDataObject._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formDataObject),
+        });
+
+        if (response.ok) {
+          alert('Incident updated successfully!');
+          // Return to the incidents page
+          window.location.href = 'index_incident.html';
+        } else {
+          alert('Failed to update incident.');
+        }
+      } catch (error) {
+        console.error('Error updating incident:', error);
+      }
+    });
+  </script>
+</body>
+</html>

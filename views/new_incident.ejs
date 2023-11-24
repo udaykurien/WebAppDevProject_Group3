@@ -1,0 +1,70 @@
+<!-- new_incident.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Incident</title>
+</head>
+<body>
+  <h1>New Incident</h1>
+  <form id="incidentForm">
+    <label for="reporter">Reporter:</label>
+    <input type="text" id="reporter" name="reporter" required><br>
+
+    <label for="assignedTo">Assigned To:</label>
+    <input type="text" id="assignedTo" name="assignedTo" required><br>
+
+    <label for="incidentType">Incident Type:</label>
+    <input type="text" id="incidentType" name="incidentType" required><br>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" required><br>
+
+    <label for="severityLevel">Severity Level:</label>
+    <input type="number" id="severityLevel" name="severityLevel" required><br>
+
+    <label for="status">Actions Taken:</label>
+    <input type="text" id="actionsTaken" name="actionsTaken" required><br>
+
+    <label for="status">Status:</label>
+    <input type="text" id="status" name="status" required><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const incidentForm = document.getElementById('incidentForm');
+
+    incidentForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(incidentForm);
+      const formDataObject = {};
+      formData.forEach((value, key) => {
+        formDataObject[key] = value;
+      });
+
+      try {
+        const response = await fetch('http://localhost:3000/incidents', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formDataObject),
+        });
+
+        if (response.ok) {
+          alert('Incident added successfully!');
+          // Return to incidence page
+          window.location.href = 'index_incident.html'; 
+        } else {
+          alert('Failed to add incident.');
+        }
+      } catch (error) {
+        console.error('Error adding incident:', error);
+      }
+    });
+  </script>
+</body>
+</html>
