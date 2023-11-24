@@ -46,11 +46,16 @@ console.log(" - Schema defined")
 const Incident = mongoose.model('incident', incidentSchema);
 
 app.use(express.json());
+app.use(express.static('public'));
 
 // Define routes
 app.get('/', (req, res) => {
   console.log('Route received');
-  res.render('home', { title: 'Home' });
+  res.render('landing_page', { title: 'Landing Page' });
+});
+
+app.get('/landing_page.html', (req, res) => {
+  res.render('landing_page', { title: 'Landing Page' });
 });
 
 app.get('/index_incident.html', (req, res) => {
