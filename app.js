@@ -90,13 +90,13 @@ app.post('/incidents', async (req, res) => {
 
 // Get all incidents
 app.get('/incidents', async (req, res) => {
-  try {      if (inputField) {
-                // Set value for all fields except the incidentId
-                    inputField.value = incidentDetails[key];
-                    console.log(`Set value for ${key}: ${incidentDetails[key]}`);
-            }
-            else {
-              console.log(`Element with id ${key} not found.`);
+  try {      
+    if (inputField) {
+      inputField.value = incidentDetails[key];
+      console.log(`Set value for ${key}: ${incidentDetails[key]}`);
+    }
+    else {
+      console.log(`Element with id ${key} not found.`);
     }
     const incidents = await Incident.find();
     res.json(incidents);
