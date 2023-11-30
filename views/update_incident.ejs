@@ -45,6 +45,11 @@
   <script>
     const updateIncidentForm = document.getElementById('updateIncidentForm');
 
+    // Function to read the token from localStorage
+    function getToken() {
+      return localStorage.getItem('token');
+  }
+
     // Function to read URL parameters
     function getUrlParams() {
       const params = new URLSearchParams(window.location.search);
@@ -101,6 +106,7 @@
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getToken()}`,
           },
           body: JSON.stringify(formDataObject),
         });

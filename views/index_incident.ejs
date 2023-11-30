@@ -11,10 +11,10 @@
 
   <h1>Incident Viewer</h1>
   
-  <button id="sortByTimeBtn">List Incidents by Creation Time</button>
-  <button id="sortBySeverityBtn">List Incidents by Severity</button>
-  <button id="sortByTypeBtn">List Incidents by Type</button>
-  <button id="sortByStatusBtn">List Incidents by Status</button>
+  <button id="sortByTimeBtn">Order by Time</button>
+  <button id="sortBySeverityBtn">Order by Severity</button>
+  <button id="sortByTypeBtn">Order by Type</button>
+  <button id="sortByStatusBtn">Order by Status</button>
   <button id="newIncidentBtn" onclick="goToNewIncidentPage()">Add Incident</button>
   
   <table id="incidentTable">
@@ -80,21 +80,37 @@
       deleteCell.appendChild(deleteButton);
     });
 
+    // Check if user is authenticated
+    // Check if the user is authenticated
+    function isAuthenticated() {
+      const token = localStorage.getItem('token');
+      return token !== null;
+    }
 
     // Function to implement deletion
     async function deleteIncident(incidentId) {
-    try {
-      const response = await fetch(`http://localhost:3000/incidents/${incidentId}`, { method: 'DELETE' });
-      const result = await response.json();
-      // Debugging
-      console.log(result.message); 
-      // Refresh the incident list after deletion
-      fetchIncidentsByField('createdAt'); 
-    } catch (error) {
-      console.error('Error deleting incident:', error);
+      if (!isAuthenticated()) {
+        alert('You need to log in to delete incidents.');
+        return;
+      }
+      try {
+        const response = await fetch(`http://localhost:3000/incidents/${incidentId}`, { 
+          method: 'DELETE',
+          headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          }, 
+        });
+        const result = await response.json();
+        // Debugging
+        console.log(result.message); 
+        // Refresh the incident list after deletion
+        fetchIncidentsByField('createdAt'); 
+      } 
+      catch (error) {
+        console.error('Error deleting incident:', error);
+      }
     }
   }
-}
 
 function goToUpdateIncidentPage(incident) {
   const queryParams = new URLSearchParams();

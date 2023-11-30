@@ -39,6 +39,11 @@
   <script>
     const incidentForm = document.getElementById('incidentForm');
 
+    // Function to read the token from localStorage
+    function getToken() {
+      return localStorage.getItem('token');
+    }
+
     incidentForm.addEventListener('submit', async function (event) {
       event.preventDefault();
 
@@ -53,6 +58,7 @@
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getToken()}`,
           },
           body: JSON.stringify(formDataObject),
         });
