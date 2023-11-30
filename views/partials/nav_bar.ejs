@@ -13,10 +13,76 @@
             <a class="nav-link" href="new_incident.html"><i class="fa-solid fa-address-book"></i>New Incident</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="login.html"><i class="fa-solid fa-address-book"></i>Login</a>
+            <a class="nav-link" id="loginButton" onclick="handleLoginLogoutClick()"><i class="fa-solid fa-address-book"></i>Login</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="register.html"><i class="fa-solid fa-address-book"></i>Register</a>
         </li>
     </ul>
 </nav>
+<script>
+
+const loginButton = document.getElementById('loginButton');
+if (loginButton) {
+    loginButton.addEventListener('click', handleLoginLogoutClick);
+}
+
+
+
+// Check if user is authenticated
+function isAuthenticated() {
+    console.log(" -Checking authentication in nav_bar");
+    const token = localStorage.getItem('token');
+    return token !== null;
+}
+
+function updateUIOnLoginLogout() {
+    if (isAuthenticated()) {
+        loginButton.textContent = "Logout";
+    }
+    else {
+        loginButton.textContent="Login";
+    }
+}
+
+updateUIOnLoginLogout();
+
+// Update UI on login/logout
+// function updateUIOnLogout() {
+//     if (loginButton) {
+//         if (isAuthenticated) {
+//         loginButton.textContent = 'Logout';
+//         }
+//         else {
+//         loginButton.onclick = () => goToLoginPage();
+//         }
+//     }
+// }
+
+
+// Function to logout
+function logout() {
+    localStorage.removeItem('token');
+    // updateUIOnLogout();
+    updateUIOnLoginLogout();
+}
+
+// Function to handle the click event on the login/logout button
+function handleLoginLogoutClick() {
+    if (isAuthenticated()) {
+        // If authenticated, perform logout
+        updateUIOnLoginLogout();
+        logout();
+    } else {
+        // If not authenticated, navigate to the login page
+        goToLoginPage();
+        updateUIOnLoginLogout();
+    }
+}
+
+// Function to navigate to the login page
+function goToLoginPage() {
+    window.location.href = 'login.html';
+}
+
+</script>
