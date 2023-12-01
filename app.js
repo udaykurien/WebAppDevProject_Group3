@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const routes = require("./routes/index")
 
 // Define connection url, ports etc
 const app = express();
@@ -12,6 +13,8 @@ const port = 3000;
 console.log(" - using app.js")
 
 app.set('view engine', 'ejs')
+
+app.use('/',routes);
 
 app.use(cors({
   origin: '*',
@@ -171,46 +174,6 @@ function authenticateToken(req, res, next) {
 
 app.get('/protected', authenticateToken, (req, res) => {
   res.json({ message: 'This is a protected route', user: req.user });
-});
-
-
-// Define routes
-app.get('/', (req, res) => {
-  console.log('Route received');
-  res.render('landing_page', { title: 'Landing Page' });
-});
-
-app.get('/login.html', (req, res) => {
-  res.render('login', { title: 'Login' });
-});
-
-app.get('/register.html', (req, res) => {
-  res.render('register', { title: 'register' });
-});
-
-app.get('/landing_page.html', (req, res) => {
-  res.render('landing_page', { title: 'Landing Page' });
-});
-
-app.get('/index_incident.html', (req, res) => {
-  res.render('index_incident', { title: 'Incidents' });
-});
-
-app.get('/new_incident.html', (req, res) => {
-  res.render('new_incident', { title: 'New Incident' });
-});
-
-
-app.get('/update_incident.html', (req, res) => {
-  res.render('update_incident', { title: 'Update Incident' });
-});
-
-app.get('/login.html', (req, res) => {
-  res.render('login', { title: 'Login' });
-});
-
-app.get('/register.html', (req, res) => {
-  res.render('register', { title: 'Register' });
 });
 
 // Define methods
