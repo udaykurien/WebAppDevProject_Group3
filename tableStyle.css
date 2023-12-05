@@ -1,0 +1,164 @@
+/* tableStyle.css */
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.navbar {
+  background-color: #3498db;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  text-decoration: none;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.navbar-brand img {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+}
+
+.navbar-nav {
+  list-style: none;
+  display: flex;
+}
+
+.nav-item {
+  margin-right: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #fff;
+  font-size: 18px;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #ecf0f1;
+}
+
+.Buttons {
+  text-align: center;
+  margin: 20px;
+}
+
+button {
+  background-color: #3498db;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 15px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+
+.incidentViewer {
+  justify-content: center;
+  align-items: center;
+  margin: 150px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+th,
+td {
+  border: 1px solid #ecf0f1;
+  text-align: left;
+  padding: 12px;
+}
+
+th {
+  background-color: #3498db;
+  color: #fff;
+}
+
+ul {
+  width: 100%;
+  padding: 0;
+}
+
+li a {
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.3s ease-in-out;
+}
+
+li a:hover {
+  background-color: #ecf0f1;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+.landing_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px;
+}
+
+
+#bigLogo {
+  width: 500px;
+}
+
+
+form {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
