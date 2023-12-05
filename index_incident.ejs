@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include ('partials/header') %>
+
+  <title>Incident Viewer</title>
+</head>
+<body>
+
+  <%- include ('partials/nav_bar') %>
+
+  <h1>Incident Viewer</h1>
+  
+  <div class="incidentViewer">
+  <button id="sortByTimeBtn">Order by Time</button>
+  <button id="sortBySeverityBtn">Order by Severity</button>
+  <button id="sortByTypeBtn">Order by Type</button>
+  <button id="sortByStatusBtn">Order by Status</button>
+  <button id="newIncidentBtn" onclick="goToNewIncidentPage()">Add Incident</button>
+  
+  <table id="incidentTable">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Status</th>
+        <th>Reporter</th>
+        <th>Assigned To</th>
+        <th>Type</th>
+        <th>Severity</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="incidentList"></tbody>
+  </table>
+</div>
+
+  <script>
+    // Buttons to list and sort incidents
+    document.getElementById('sortByTimeBtn').addEventListener('click', () => fetchIncidentsByField('createdAt'));
+    document.getElementById('sortBySeverityBtn').addEventListener('click', () => fetchIncidentsByField('severityLevel'));
+    document.getElementById('sortByTypeBtn').addEventListener('click', () => fetchIncidentsByField('incidentType'));
+    document.getElementById('sortByStatusBtn').addEventListener('click', () => fetchIncidentsByField('status'));
+
+    // Fetch and sort incidents by fields
+    async function fetchIncidentsByField(sortByField) {
+    try {
+      const response = await fetch(`http://localhost:3000/incidents/all?sortBy=${sortByField}`);
+      const incidents = await response.json();
+      displayIncidents(incidents);
+    } catch (error) {
+      console.error('Error fetching incidents:', error);
+    }
+  }    
+    // Function to display each object of database along with a delete button
+    function displayIncidents(incidents) {
+      const incidentList = document.getElementById('incidentList');
+      incidentList.innerHTML = '';
+
+      const propertiesToDisplay = ['createdAt','status', 'reporter', 'assignedTo', 'incidentType', 'severityLevel', 'description', 'actionsTaken'];
+
+      // Print each incident in tabular form
+      incidents.forEach(incident => {
+        const row = incidentList.insertRow();
+        propertiesToDisplay.forEach(property => {
+        const cell = row.insertCell();
+        cell.textContent = incident[property];
+      });
+
+      // Add update button to each row
+      const updateCell = row.insertCell();
+      const updateButton = document.createElement('button');
+      updateButton.textContent = 'Update';
+      updateButton.addEventListener('click', () => goToUpdateIncidentPage(incident));
+      updateCell.appendChild(updateButton);
+
+      // Add delete button to each row
+      const deleteCell = row.insertCell();
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', () => deleteIncident(incident._id));
+      deleteCell.appendChild(deleteButton);
+    });
+
+    // Check if user is authenticated
+    // Check if the user is authenticated
+    function isAuthenticated() {
+      const token = localStorage.getItem('token');
+      return token !== null;
+    }
+
+    // Function to implement deletion
+    async function deleteIncident(incidentId) {
+      if (!isAuthenticated()) {
+        alert('You need to log in to delete incidents.');
+        return;
+      }
+      try {
+        const response = await fetch(`http://localhost:3000/incidents/${incidentId}`, { 
+          method: 'DELETE',
+          headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          }, 
+        });
+        const result = await response.json();
+        // Debugging
+        console.log(result.message); 
+        // Refresh the incident list after deletion
+        fetchIncidentsByField('createdAt'); 
+      } 
+      catch (error) {
+        console.error('Error deleting incident:', error);
+      }
+    }
+  }
+
+function goToUpdateIncidentPage(incident) {
+  const queryParams = new URLSearchParams();
+  for (const key in incident) {
+    queryParams.append(key, incident[key]);
+  }
+  window.location.href = `update_incident.html?${queryParams.toString()}`;
+  // window.location.href = `update_incident.html?incidentId=${incidentId}`;
+}
+
+function goToNewIncidentPage() {
+      window.location.href = 'new_incident.html';
+}
+  </script>
+</body>
+</html>
