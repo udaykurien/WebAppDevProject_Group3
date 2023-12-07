@@ -43,7 +43,7 @@
     // Fetch and sort incidents by fields
     async function fetchIncidentsByField(sortByField) {
     try {
-      const response = await fetch(`http://localhost:3000/incidents/all?sortBy=${sortByField}`);
+      const response = await fetch(`/incidents/all?sortBy=${sortByField}`);
       const incidents = await response.json();
       displayIncidents(incidents);
     } catch (error) {
@@ -94,7 +94,7 @@
         return;
       }
       try {
-        const response = await fetch(`http://localhost:3000/incidents/${incidentId}`, { 
+        const response = await fetch(`/incidents/${incidentId}`, { 
           method: 'DELETE',
           headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
