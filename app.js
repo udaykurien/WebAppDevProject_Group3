@@ -8,7 +8,8 @@ const routes = require("./routes/index")
 
 // Define connection url, ports etc
 const app = express();
-const uri = 'mongodb://127.0.0.1:27017/WebDevProject';
+// const uri = 'mongodb://127.0.0.1:27017/WebDevProject';
+const uri ='mongodb+srv://udaykuriendev:<password>@cluster0.ryklvtw.mongodb.net/?retryWrites=true&w=majority'
 const port = 3000;
 console.log(" - using app.js")
 
