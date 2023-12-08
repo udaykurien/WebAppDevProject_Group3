@@ -36,6 +36,12 @@
 </div>
 
   <script>
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Fetch and display incidents sorted by 'createdAt' when the page loads
+      await fetchIncidentsByField('createdAt');
+    });
+
     // Buttons to list and sort incidents
     document.getElementById('sortByTimeBtn').addEventListener('click', () => fetchIncidentsByField('createdAt'));
     document.getElementById('sortBySeverityBtn').addEventListener('click', () => fetchIncidentsByField('severityLevel'));
@@ -127,5 +133,6 @@ function goToNewIncidentPage() {
       window.location.href = 'new_incident.html';
 }
   </script>
+  <%- include ('partials/footer') %>
 </body>
 </html>

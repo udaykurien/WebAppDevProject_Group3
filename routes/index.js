@@ -20,6 +20,10 @@ const router = express.Router();
     res.render('landing_page', { title: 'Landing Page' });
   });
   
+  router.get('/about_us.html', (req, res) => {
+    res.render('about_us', { title: 'About Us' });
+  });
+  
   router.get('/index_incident.html', (req, res) => {
     res.render('index_incident', { title: 'Incidents' });
   });

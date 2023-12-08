@@ -137,7 +137,7 @@ img {
 
 
 #bigLogo {
-  width: 500px;
+  width: 400px;
 }
 
 
@@ -160,5 +160,72 @@ input {
   padding: 8px;
   margin-bottom: 15px;
   box-sizing: border-box;
+}
+
+img {
+  width: 50%;
+  height: 50%;
+  float:right;
+}
+
+.center{
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 600px; 
+}
+.homepage {
+  vertical-align: center;
+  text-align: center;
+  padding-top: 25px;
+}
+.description {
+  text-align: center;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.portraits {
+  width: 370px;
+  display: block;
+  margin: 20px auto;
+}
+
+.uday {
+  height: 370px;
+  width: 450px; 
+}
+
+.shane{
+  height: 370px;
+  width: 370px; 
+}
+
+.josh {
+  height: 430px;
+  width: 370px; 
+}
+
+.aboutusdescription {
+  text-align: center;
+  padding: 25px 200px 25px 200px;
+}
+
+.developers{
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+}
+.caption{
+  display: block;
+  margin: 0 auto;
+  text-align: center;
 }
 
