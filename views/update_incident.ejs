@@ -102,7 +102,7 @@
       });
 
       try {
-        const response = await fetch(`http://localhost:3000/incidents/${formDataObject._id}`, {
+        const response = await fetch(`/incidents/${formDataObject._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
